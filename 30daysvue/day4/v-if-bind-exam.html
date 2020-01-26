@@ -1,0 +1,14 @@
+<html>
+  <body>
+    <div id="app">
+      <h2>{{ greeting }}</h2>
+      <p>by {{ user }} who lives in {{ city }}</p>
+      <img v-bind:src="cityImage" />
+      <button v-on:click="changeCity">
+        Change City
+      </button>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="./v-if-bind.js"></script>
+  </body>
+</html>
