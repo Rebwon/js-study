@@ -512,4 +512,3 @@ function workout() {
 }
 workout();
 ```
-
