@@ -11,42 +11,41 @@
     </head>
     <body>
         <div id="app" v-cloak>
-            <ul>
-                <li v-for="message in messages">
-                    {{ message.text }} - {{ message.createdAt }}
-                    <div><button @Click="deleteMessage(message)">X</button></div>
-                </li>
-            </ul>
+            <message-list :items="messages" @delete="deleteMessage"></message-list>
             <form @submit.prevent="addMessage">
                 <textarea v-model="newMessage" placeholder="Leave a Message"></textarea>
                 <div><button v-bind:disabled="addDisabled" type="submit">Add</button></div>
             </form>
-            <script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
-            <script>
-                let vm = new Vue({
-                    el: '#app',
-                    data: {
-                        messages: [],
-                        newMessage: ''
-                    },
-                    computed: {
-                        addDisabled () {
-                            return this.messages.length >= 10 || this.newMessage.length > 50
-                        }
-                    },
-                    methods: {
-                        addMessage (event) {
-                            if(!this.newMessage) {return;}
-                                this.messages.push({
-                                    text: this.newMessage, createdAt: new Date()});
-                                this.newMessage = '';
-                        },
-                        deleteMessage (message) {
-                            this.messages.splice(this.messages.indexOf(message), 1)
-                        }
-                    }
-                });
-            </script>
         </div>
+        <script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+        <script type="module">
+            import MessageList from './components/MessageList.js'
+            let vm = new Vue({
+                el: '#app',
+                data: {
+                    messages: [],
+                    newMessage: ''
+                },
+                computed: {
+                    addDisabled () {
+                        return this.messages.length >= 10 || this.newMessage.length > 50
+                    }
+                },
+                components: {
+                    MessageList
+                },
+                methods: {
+                    addMessage (event) {
+                        if(!this.newMessage) return
+                        let now = new Date()
+                        this.messages.push({id: now.getTime(), text: this.newMessage, createdAt: now})
+                        this.newMessage = ''
+                    },
+                    deleteMessage (message) {
+                        this.messages.splice(this.messages.indexOf(message), 1)
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
